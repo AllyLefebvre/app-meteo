@@ -16,11 +16,27 @@
   --color-verre-fort: #ffffff99;
   --color-verre-bordure: #ffffff80;
 
-  /* Valeurs estimées d'après une capture de la maquette, à confirmer dans Figma */
+  /* Dégradé et halos de la maquette */
   --color-fond-milieu: #f0abfc;
   --color-fond-fin: #fed7aa;
   --color-halo-froid: #7c3aed;
   --color-halo-chaud: #fb923c;
+
+  /* Titres de la maquette : version mobile, puis version large */
+  --text-titre: 2.5rem;
+  --text-titre--line-height: 2.625rem;
+  --text-titre--letter-spacing: -0.03em;
+  --text-titre--font-weight: 700;
+  --text-titre-large: 4.5rem;
+  --text-titre-large--line-height: 5.875rem;
+  --text-titre-large--letter-spacing: -0.03em;
+  --text-titre-large--font-weight: 700;
+  --text-sous-titre: 1.0625rem;
+  --text-sous-titre--line-height: 1.5rem;
+  --text-sous-titre--font-weight: 500;
+  --text-sous-titre-large: 1.75rem;
+  --text-sous-titre-large--line-height: 2.25rem;
+  --text-sous-titre-large--font-weight: 500;
 }
 
 body {

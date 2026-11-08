@@ -26,7 +26,7 @@ const HALO_POSITIONS: Record<
 };
 
 const HALO_BASE =
-  "pointer-events-none absolute rounded-full opacity-60 blur-[56px] md:blur-[80px]";
+  "pointer-events-none absolute rounded-full opacity-55 blur-[50px] md:blur-[80px]";
 
 export default function PageBackground({
   variant,
