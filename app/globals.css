@@ -1,25 +1,28 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  /* Variables Figma (WTM-12) */
+  --color-encre: #3b0764;
+  --color-encre-douce: #581c87b2;
+  --color-sur-encre: #ffffff;
+  --color-accent: #a855f7;
+  --color-chaud-fort: #fdba74;
+  --color-verre: #ffffff66;
+  --color-verre-fort: #ffffff99;
+  --color-verre-bordure: #ffffff80;
+
+  /* Valeurs estimées d'après une capture de la maquette, à confirmer dans Figma */
+  --color-fond-milieu: #f0abfc;
+  --color-fond-fin: #fed7aa;
+  --color-halo-froid: #7c3aed;
+  --color-halo-chaud: #fb923c;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  color: var(--color-encre);
 }
