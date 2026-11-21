@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WeatherMind",
+  title: "Whimcast",
   description: "Planifiez votre journée avec une météo nouvelle génération.",
 };
 

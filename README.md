@@ -1,4 +1,4 @@
-# WeatherMind
+# Whimcast
 
 Application météo avec des prévisions expliquées par IA, pour planifier sa journée.
 
