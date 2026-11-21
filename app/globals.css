@@ -8,13 +8,27 @@
 @theme {
   /* Variables Figma (WTM-12) */
   --color-encre: #3b0764;
-  --color-encre-douce: #581c87b2;
+  /* Figma : #581c87 à 70 %. Remplacé par l'encre à 85 % : contraste ≥ 4,5:1 (WCAG AA) sur tout le fond. */
+  --color-encre-douce: #3b0764d9;
   --color-sur-encre: #ffffff;
   --color-accent: #a855f7;
   --color-chaud-fort: #fdba74;
   --color-verre: #ffffff66;
   --color-verre-fort: #ffffff99;
   --color-verre-bordure: #ffffff80;
+  --color-verre-survol: #ffffffcc;
+  --color-verre-bordure-survol: #ffffff;
+
+  /* Effet verre de la maquette (WTM-14) */
+  --blur-verre: 20px;
+  --shadow-verre: 0 12px 32px rgb(59 7 100 / 0.12);
+  --shadow-verre-survol: 0 18px 40px rgb(59 7 100 / 0.22);
+
+  /* Arrondis de la maquette */
+  --radius-puce: 1.25rem;
+  --radius-carte: 1.5rem;
+  --radius-bloc: 1.75rem;
+  --radius-bloc-large: 2rem;
 
   /* Dégradé et halos de la maquette */
   --color-fond-milieu: #f0abfc;
