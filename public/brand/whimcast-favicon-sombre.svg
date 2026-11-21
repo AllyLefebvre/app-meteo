@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 120 120" width="512" height="512">
+<title>Whimcast — favicon sombre</title>
+<defs>
+<path id="pin" d="M54 106 C44 92 24 78 24 58 A30 30 0 1 1 84 58 C84 78 64 92 54 106 Z"/>
+<clipPath id="ci"><circle cx="54" cy="58" r="23"/></clipPath>
+<g id="sk"><rect x="30" y="66" width="10" height="22"/><rect x="41" y="54" width="9" height="34"/><rect x="51" y="61" width="8" height="27"/><path d="M60 88 V58 L64 49 L68 58 V88 Z"/><rect x="69" y="64" width="12" height="24"/></g>
+<g id="fc"><circle cx="66" cy="34" r="8"/><circle cx="80" cy="27" r="12"/><circle cx="94" cy="34" r="8"/><rect x="66" y="32" width="28" height="10"/></g>
+<g id="win"><rect x="43" y="59" width="3" height="3"/><rect x="43" y="67" width="3" height="3"/><rect x="62.5" y="62" width="3" height="3"/><rect x="73" y="69" width="3" height="3"/><rect x="33" y="71" width="3" height="3"/></g>
+<radialGradient id="sun" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#FEF3C7"/><stop offset=".55" stop-color="#FDBA74"/><stop offset="1" stop-color="#FB923C"/></radialGradient>
+<linearGradient id="skyL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8B4FE"/><stop offset=".38" stop-color="#F0ABFC"/><stop offset=".7" stop-color="#F9A8A0"/><stop offset="1" stop-color="#FDD9B0"/></linearGradient>
+<linearGradient id="skyT" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C084FC"/><stop offset=".45" stop-color="#F0ABFC"/><stop offset="1" stop-color="#FED7AA"/></linearGradient>
+<linearGradient id="skyD" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B0764"/><stop offset=".35" stop-color="#7E22CE"/><stop offset=".68" stop-color="#DB2777"/><stop offset="1" stop-color="#FB923C"/></linearGradient></defs>
+<g transform="translate(60 60) scale(1.3) translate(-54 -64)"><use xlink:href="#pin" fill="#C084FC"/><circle cx="54" cy="58" r="23" fill="url(#skyD)"/><g clip-path="url(#ci)"><circle cx="56" cy="71" r="13" fill="url(#sun)"/><use xlink:href="#sk" fill="#160828"/></g></g>
+</svg>

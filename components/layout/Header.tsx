@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
-import Icon from "@/components/ui/Icon";
+import Logo from "@/components/ui/Logo";
 
 /**
  * En-tête desktop (maquette 1440 px : contenu de 1200 px, 40 px du haut).
@@ -13,12 +13,10 @@ export default function Header() {
       <div className="mx-auto flex w-full max-w-[1248px] items-center justify-between px-6 pt-10">
         <Link
           href="/"
-          className="flex items-center gap-2.5 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-encre"
+          aria-label="Whimcast, accueil"
+          className="rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-encre"
         >
-          <span className="flex size-9 items-center justify-center rounded-xl bg-encre text-sur-encre">
-            <Icon name="etincelles" size={18} />
-          </span>
-          <span className="text-xl font-bold text-encre">Whimcast</span>
+          <Logo />
         </Link>
         <Navbar />
       </div>
