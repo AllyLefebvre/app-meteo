@@ -36,9 +36,29 @@ L'application est ensuite disponible sur [http://localhost:3000](http://localhos
 ```
 app/          Pages et mise en page globale
 components/   Composants d'interface
+lib/format/   Formatage fr-CA des dates, heures et températures
 lib/weather/  Client météo (serveur) et types de la réponse normalisée
 public/       Fichiers statiques
 ```
+
+## Formatage fr-CA
+
+`lib/format/` regroupe les formats de la maquette, utilisables côté serveur comme côté client :
+
+| Fonction | Exemple |
+|---|---|
+| `formatTime(date, fuseau)` | « 14 h 55 », « 16 h » |
+| `formatHourLabel(date, fuseau, maintenant?)` | « Maint. » pour l'heure en cours, sinon « 16 h » |
+| `formatLongDateTime(date, fuseau)` | « Samedi 7 novembre · 14 h 55 » |
+| `formatShortDateTime(date, fuseau)` | « Sam. 7 nov. · 14 h 55 » |
+| `formatDayName(date, fuseau, maintenant?)` | « Aujourd'hui », « Dimanche » |
+| `formatDayNameShort(date, fuseau, maintenant?)` | « Auj. », « Dim. » |
+| `formatTemperature(°C)` | « 12° », « -3° », « 0° » (jamais « -0° ») |
+
+- Le fuseau est celui de la ville consultée (`location.timezone` de `WeatherData`), pas celui de l'utilisateur.
+- Les dates d'Open-Meteo (« 2026-11-07T14:55 », sans fuseau) sont déjà à l'heure de la ville et ne sont pas converties. Un `Date` ou une chaîne avec fuseau (« …Z ») est converti dans le fuseau donné.
+- Pour éviter un écart d'hydratation, passer le même `maintenant` au rendu serveur et au rendu client.
+- Les espaces à l'intérieur d'une heure sont insécables (`NBSP`).
 
 ## Données météo
 
