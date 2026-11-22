@@ -46,6 +46,7 @@ export default function SearchInput() {
         <div
           className="
             flex
+            shrink-0
             items-center
             justify-center
             h-12
@@ -64,6 +65,7 @@ export default function SearchInput() {
           onChange={(e) => setValue(e.target.value)}
           placeholder="Rechercher une ville..."
           className="
+            min-w-0
             flex-1
             bg-transparent
             outline-none
@@ -76,6 +78,7 @@ export default function SearchInput() {
           className="
             hidden
             md:flex
+            shrink-0
             items-center
             gap-1
             rounded-full
