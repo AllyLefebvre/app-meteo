@@ -5,6 +5,7 @@ import EtatErreur from "@/components/previsions/EtatErreur";
 import MeteoActuelleProvisoire from "@/components/previsions/MeteoActuelleProvisoire";
 import PrevisionsCadre from "@/components/previsions/PrevisionsCadre";
 import PrevisionsGrille from "@/components/previsions/PrevisionsGrille";
+import RetenirVille from "@/components/previsions/RetenirVille";
 import { formatShortDateTime } from "@/lib/format";
 import { lirePrevisionsParams } from "@/lib/previsions";
 import { getWeather, isWeatherError, type WeatherData } from "@/lib/weather";
@@ -38,7 +39,8 @@ async function chargerMeteo(latitude: number, longitude: number): Promise<Weathe
  */
 export default async function Previsions({ searchParams }: PrevisionsProps) {
   const lieu = lirePrevisionsParams(await searchParams);
-  // Coordonnées absentes ou invalides : retour à l'accueil pour choisir une ville.
+  // Normalement impossible : proxy.ts redirige déjà vers la dernière ville
+  // consultée. Filet de sécurité : retour à l'accueil.
   if (!lieu) redirect("/");
 
   const meteo = await chargerMeteo(lieu.latitude, lieu.longitude);
@@ -46,6 +48,7 @@ export default async function Previsions({ searchParams }: PrevisionsProps) {
   if (!meteo) {
     return (
       <PrevisionsCadre lieu={lieu.nom} date="">
+        <RetenirVille {...lieu} />
         <EtatErreur />
       </PrevisionsCadre>
     );
@@ -59,6 +62,7 @@ export default async function Previsions({ searchParams }: PrevisionsProps) {
   return (
     <PrevisionsCadre lieu={lieu.nom} date={date}>
       <h1 className="sr-only">Prévisions pour {lieu.nom}</h1>
+      <RetenirVille {...lieu} />
       <PrevisionsGrille
         actuelle={<MeteoActuelleProvisoire nom={lieu.nom} meteo={meteo} />}
         resume={
