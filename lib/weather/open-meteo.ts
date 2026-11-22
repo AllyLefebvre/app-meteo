@@ -96,7 +96,9 @@ export async function getWeather(coordinates: Coordinates): Promise<WeatherData>
     const reason = await response
       .json()
       .then((body: { reason?: unknown }) =>
-        typeof body?.reason === "string" ? body.reason : undefined,
+        typeof body?.reason === "string"
+          ? body.reason.replace(/\.+$/, "")
+          : undefined,
       )
       .catch(() => undefined);
     throw new WeatherError(
