@@ -71,3 +71,29 @@ export function lienPrevisions({
   if (nom) search.set("nom", nom);
   return `${PREVISIONS_PATH}?${search.toString()}`;
 }
+
+/*
+ * Dernière ville consultée : retenue dans un cookie par RetenirVille à chaque
+ * visite de la page Prévisions. Le lien « Prévisions » du menu (/previsions,
+ * sans ville) rouvre cette ville, ou la ville par défaut à la première visite.
+ */
+
+export const DERNIERE_VILLE_COOKIE = "whimcast-derniere-ville";
+
+/** Ville ouverte quand aucune ville n'a encore été consultée. */
+export const VILLE_PAR_DEFAUT: PrevisionsLieu = {
+  latitude: 45.5088,
+  longitude: -73.5878,
+  nom: "Montréal, QC",
+};
+
+/** Valeur du cookie : les paramètres de l'URL (lat=…&lon=…&nom=…). */
+export function versCookieVille(lieu: PrevisionsLieu): string {
+  return lienPrevisions(lieu).slice(PREVISIONS_PATH.length + 1);
+}
+
+/** Lieu lu dans le cookie ; null s'il est absent ou invalide. */
+export function lireCookieVille(valeur: string | undefined): PrevisionsLieu | null {
+  if (!valeur) return null;
+  return lirePrevisionsParams(Object.fromEntries(new URLSearchParams(valeur)));
+}
