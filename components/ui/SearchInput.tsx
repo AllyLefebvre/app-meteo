@@ -41,6 +41,10 @@ export default function SearchInput() {
           transition-all
           duration-300
           focus-within:bg-white/60
+          hover:-translate-y-0.5
+          hover:shadow-verre-survol
+          hover:border-verre-bordure-survol
+          motion-reduce:hover:translate-y-0
         "
       >
         <div
