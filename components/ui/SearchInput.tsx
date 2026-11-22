@@ -3,8 +3,8 @@
 import { useId, useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Badge from "@/components/ui/Badge";
+import BoutonMaPosition from "@/components/ui/BoutonMaPosition";
 import Button from "@/components/ui/Button";
-import Icon from "@/components/ui/Icon";
 import { lienPrevisions } from "@/lib/previsions";
 import type { GeocodeApiResponse } from "@/lib/weather/api";
 
@@ -175,16 +175,8 @@ export default function SearchInput({
         >
           {texte}
         </p>
-        {taille === "large" && (
-          // Géolocalisation branchée dans WMC-25.
-          <button
-            type="button"
-            className="ml-auto flex shrink-0 items-center gap-1.5 rounded-lg text-sm text-encre-douce transition-colors hover:text-encre focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-encre"
-          >
-            <Icon name="position" size={16} />
-            Utiliser ma position
-          </button>
-        )}
+        {/* Hors du formulaire, type="button" : ne lance jamais la recherche. */}
+        {taille === "large" && <BoutonMaPosition apparence="lien" />}
       </div>
     </div>
   );
