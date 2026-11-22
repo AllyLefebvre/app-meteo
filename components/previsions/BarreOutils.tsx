@@ -2,12 +2,17 @@ import Link from "next/link";
 import Icon from "@/components/ui/Icon";
 import SearchInput from "@/components/ui/SearchInput";
 
+type BarreOutilsProps = {
+  /** Ville affichée, montrée dans la recherche (ex. « Montréal, QC »). */
+  ville?: string;
+};
+
 /**
  * Barre d'outils desktop de la page Prévisions (maquette 6:160) : retour à
  * l'accueil à gauche, recherche (420 px) à droite. En mobile, l'en-tête
  * mobile porte déjà ces deux actions.
  */
-export default function BarreOutils() {
+export default function BarreOutils({ ville }: BarreOutilsProps) {
   return (
     <div className="hidden min-h-[74px] items-center justify-between gap-6 md:flex">
       <Link
@@ -17,9 +22,8 @@ export default function BarreOutils() {
         <Icon name="retour" size={18} />
         Retour à l&apos;accueil
       </Link>
-      {/* Recherche à rendre conforme et fonctionnelle dans WMC-23. */}
       <div className="w-[420px]">
-        <SearchInput />
+        <SearchInput taille="compacte" placeholder={ville} />
       </div>
     </div>
   );
