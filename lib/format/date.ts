@@ -1,96 +1,84 @@
-import {
-  getDateParts,
-  isSameDay,
-  isSameHour,
-  type DateInput,
-  type DateParts,
-} from "./date-parts";
+import { getDateParts, isSameDay, isSameHour, type DateInput } from "./date-parts";
+import { getLocaleData, type FormatLocale } from "./locales";
 
 /*
- * Formats de date et d'heure de la maquette, en français du Québec.
+ * Formats de date et d'heure de la maquette.
  *
- * Chaque fonction reçoit le fuseau de la ville consultée : l'heure affichée
- * est celle de la ville, pas celle de l'utilisateur. Les noms de jours et de
- * mois sont écrits ici plutôt que tirés d'Intl, dont la casse et les
- * abréviations varient selon le navigateur (et causeraient des écarts
- * d'hydratation entre le serveur et le client).
- *
- * Les espaces à l'intérieur d'une heure (« 14 h 55 ») sont insécables, pour
- * que l'heure ne soit jamais coupée en fin de ligne.
+ * Chaque fonction reçoit la langue et le fuseau de la ville consultée :
+ * l'heure affichée est celle de la ville, pas celle de l'utilisateur.
  */
 
-/** Espace insécable. */
-export const NBSP = " ";
+export type DateFormatOptions = {
+  locale: FormatLocale;
+  /** Fuseau IANA de la ville, ex. « America/Toronto ». */
+  timeZone: string;
+};
 
-const DAYS = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-const DAYS_SHORT = ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."];
-const MONTHS = [
-  "janvier", "février", "mars", "avril", "mai", "juin",
-  "juillet", "août", "septembre", "octobre", "novembre", "décembre",
-];
-const MONTHS_SHORT = [
-  "janv.", "févr.", "mars", "avr.", "mai", "juin",
-  "juil.", "août", "sept.", "oct.", "nov.", "déc.",
-];
+export type RelativeFormatOptions = DateFormatOptions & {
+  /**
+   * Instant de référence pour « Aujourd'hui » et « Maint. » (maintenant par
+   * défaut). Passer la même valeur au rendu serveur et client pour éviter un
+   * écart d'hydratation.
+   */
+  now?: Date;
+};
 
-export const TODAY = "Aujourd'hui";
-export const TODAY_SHORT = "Auj.";
-export const NOW_SHORT = "Maint.";
-
-function timeOf({ hour, minute }: DateParts): string {
-  return minute === 0
-    ? `${hour}${NBSP}h`
-    : `${hour}${NBSP}h${NBSP}${String(minute).padStart(2, "0")}`;
-}
-
-/** « 14 h 55 », ou « 16 h » à l'heure pile. */
-export function formatTime(input: DateInput, timeZone: string): string {
-  return timeOf(getDateParts(input, timeZone));
+/** fr-CA : « 14 h 55 », ou « 16 h » à l'heure pile. */
+export function formatTime(input: DateInput, { locale, timeZone }: DateFormatOptions): string {
+  return getLocaleData(locale).time(getDateParts(input, timeZone));
 }
 
 /**
- * Libellé d'une colonne « Heure par heure » : « Maint. » pour l'heure en
- * cours dans la ville, sinon « 16 h ».
+ * Libellé d'une colonne « Heure par heure ». fr-CA : « Maint. » pour l'heure
+ * en cours dans la ville, sinon « 16 h ».
  */
 export function formatHourLabel(
   input: DateInput,
-  timeZone: string,
-  now: Date = new Date(),
+  { locale, timeZone, now = new Date() }: RelativeFormatOptions,
 ): string {
+  const data = getLocaleData(locale);
   const parts = getDateParts(input, timeZone);
-  return isSameHour(parts, getDateParts(now, timeZone)) ? NOW_SHORT : timeOf(parts);
+  return isSameHour(parts, getDateParts(now, timeZone)) ? data.now : data.time(parts);
 }
 
-/** « Samedi 7 novembre · 14 h 55 » */
-export function formatLongDateTime(input: DateInput, timeZone: string): string {
+/** fr-CA : « Samedi 7 novembre · 14 h 55 » */
+export function formatLongDateTime(
+  input: DateInput,
+  { locale, timeZone }: DateFormatOptions,
+): string {
+  const data = getLocaleData(locale);
   const parts = getDateParts(input, timeZone);
-  return `${DAYS[parts.weekday]} ${parts.day} ${MONTHS[parts.month - 1]} · ${timeOf(parts)}`;
+  return `${data.longDate(parts)}${data.dateTimeSeparator}${data.time(parts)}`;
 }
 
-/** « Sam. 7 nov. · 14 h 55 » */
-export function formatShortDateTime(input: DateInput, timeZone: string): string {
+/** fr-CA : « Sam. 7 nov. · 14 h 55 » */
+export function formatShortDateTime(
+  input: DateInput,
+  { locale, timeZone }: DateFormatOptions,
+): string {
+  const data = getLocaleData(locale);
   const parts = getDateParts(input, timeZone);
-  return `${DAYS_SHORT[parts.weekday]} ${parts.day} ${MONTHS_SHORT[parts.month - 1]} · ${timeOf(parts)}`;
+  return `${data.shortDate(parts)}${data.dateTimeSeparator}${data.time(parts)}`;
 }
 
-/** « Aujourd'hui » pour le jour en cours dans la ville, sinon « Dimanche ». */
+/** fr-CA : « Aujourd'hui » pour le jour en cours dans la ville, sinon « Dimanche ». */
 export function formatDayName(
   input: DateInput,
-  timeZone: string,
-  now: Date = new Date(),
+  { locale, timeZone, now = new Date() }: RelativeFormatOptions,
 ): string {
+  const data = getLocaleData(locale);
   const parts = getDateParts(input, timeZone);
-  return isSameDay(parts, getDateParts(now, timeZone)) ? TODAY : DAYS[parts.weekday];
+  return isSameDay(parts, getDateParts(now, timeZone)) ? data.today : data.days[parts.weekday];
 }
 
-/** « Auj. » pour le jour en cours dans la ville, sinon « Dim. ». */
+/** fr-CA : « Auj. » pour le jour en cours dans la ville, sinon « Dim. ». */
 export function formatDayNameShort(
   input: DateInput,
-  timeZone: string,
-  now: Date = new Date(),
+  { locale, timeZone, now = new Date() }: RelativeFormatOptions,
 ): string {
+  const data = getLocaleData(locale);
   const parts = getDateParts(input, timeZone);
   return isSameDay(parts, getDateParts(now, timeZone))
-    ? TODAY_SHORT
-    : DAYS_SHORT[parts.weekday];
+    ? data.todayShort
+    : data.daysShort[parts.weekday];
 }

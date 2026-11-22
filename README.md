@@ -36,28 +36,34 @@ L'application est ensuite disponible sur [http://localhost:3000](http://localhos
 ```
 app/          Pages et mise en page globale
 components/   Composants d'interface
-lib/format/   Formatage fr-CA des dates, heures et températures
+lib/format/   Formatage des dates, heures et températures (par langue)
 lib/weather/  Client météo (serveur) et types de la réponse normalisée
 public/       Fichiers statiques
 ```
 
-## Formatage fr-CA
+## Formatage
 
-`lib/format/` regroupe les formats de la maquette, utilisables côté serveur comme côté client :
+`lib/format/` regroupe les formats de la maquette, utilisables côté serveur comme côté client. Chaque fonction de date reçoit la langue et le fuseau :
 
-| Fonction | Exemple |
+```ts
+formatLongDateTime("2026-11-07T14:55", { locale: "fr-CA", timeZone: "America/Toronto" });
+// « Samedi 7 novembre · 14 h 55 »
+```
+
+| Fonction | Exemple en fr-CA |
 |---|---|
-| `formatTime(date, fuseau)` | « 14 h 55 », « 16 h » |
-| `formatHourLabel(date, fuseau, maintenant?)` | « Maint. » pour l'heure en cours, sinon « 16 h » |
-| `formatLongDateTime(date, fuseau)` | « Samedi 7 novembre · 14 h 55 » |
-| `formatShortDateTime(date, fuseau)` | « Sam. 7 nov. · 14 h 55 » |
-| `formatDayName(date, fuseau, maintenant?)` | « Aujourd'hui », « Dimanche » |
-| `formatDayNameShort(date, fuseau, maintenant?)` | « Auj. », « Dim. » |
+| `formatTime(date, options)` | « 14 h 55 », « 16 h » |
+| `formatHourLabel(date, options)` | « Maint. » pour l'heure en cours, sinon « 16 h » |
+| `formatLongDateTime(date, options)` | « Samedi 7 novembre · 14 h 55 » |
+| `formatShortDateTime(date, options)` | « Sam. 7 nov. · 14 h 55 » |
+| `formatDayName(date, options)` | « Aujourd'hui », « Dimanche » |
+| `formatDayNameShort(date, options)` | « Auj. », « Dim. » |
 | `formatTemperature(°C)` | « 12° », « -3° », « 0° » (jamais « -0° ») |
 
+- Langues : fr-CA seulement pour l'instant. Les formats de chaque langue sont dans `lib/format/locales.ts` ; en-CA et en-US arrivent avec WMC-46 (épopée E8, WMC-44).
 - Le fuseau est celui de la ville consultée (`location.timezone` de `WeatherData`), pas celui de l'utilisateur.
 - Les dates d'Open-Meteo (« 2026-11-07T14:55 », sans fuseau) sont déjà à l'heure de la ville et ne sont pas converties. Un `Date` ou une chaîne avec fuseau (« …Z ») est converti dans le fuseau donné.
-- Pour éviter un écart d'hydratation, passer le même `maintenant` au rendu serveur et au rendu client.
+- Pour éviter un écart d'hydratation, passer la même option `now` au rendu serveur et au rendu client.
 - Les espaces à l'intérieur d'une heure sont insécables (`NBSP`).
 
 ## Données météo
