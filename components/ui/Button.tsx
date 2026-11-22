@@ -18,12 +18,12 @@ type ButtonProps = Omit<
   label: string;
 };
 
-const BASE =
+export const BASE =
   "inline-flex shrink-0 items-center justify-center transition-colors " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-encre " +
   "disabled:cursor-not-allowed disabled:opacity-50";
 
-const VARIANTS: Record<ButtonVariant, { classes: string; iconSize: number }> = {
+export const VARIANTS: Record<ButtonVariant, { classes: string; iconSize: number }> = {
   icone: {
     classes:
       "size-11 rounded-full border border-verre-bordure bg-verre-fort text-encre " +
