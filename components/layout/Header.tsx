@@ -5,7 +5,7 @@ import Logo from "@/components/ui/Logo";
 /**
  * En-tête desktop (maquette 1440 px : contenu de 1200 px, 40 px du haut).
  * Posé par-dessus le fond de page ; masqué sous le point de rupture md,
- * où les en-têtes mobiles prennent le relais (WMC-16).
+ * où chaque page affiche son en-tête mobile (MobileHeader).
  */
 export default function Header() {
   return (
