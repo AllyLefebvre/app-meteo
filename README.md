@@ -107,6 +107,18 @@ Pour les erreurs 502, le détail technique est écrit dans les journaux du serve
 
 Côté serveur, un même point n'est demandé à Open-Meteo qu'une fois toutes les 10 minutes : les appels suivants sont servis par le cache de Next.js.
 
+### Libellés dérivés
+
+Le bloc « Détails du moment » affiche sous certaines valeurs un libellé que l'API ne fournit pas. `lib/weather/derived.ts` le calcule : `getDerivedStats(data)` renvoie un code pour chacun (ou `null` si les données manquent), et `getDerivedLabels(codes, "fr" | "en")` donne le texte. Les seuils s'appliquent aux données d'origine, en métrique.
+
+| Libellé | Règle | Codes et textes (fr) |
+|---|---|---|
+| Tendance de pression | Pression de l'heure en cours comparée à celle dans 3 heures ; hausse ou baisse à partir de 1 hPa (0,1 kPa, seuil d'Environnement Canada) | `rising` En hausse, `steady` Stable, `falling` En baisse |
+| Visibilité | 10 km et plus, 5 km, 2 km, 1 km, moins de 1 km | `excellent` Excellente, `good` Bonne, `moderate` Moyenne, `poor` Faible, `very-poor` Très faible |
+| Ressenti | Écart de moins de 2 °C : proche. Plus froid : dû au vent dès 10 km/h. Plus chaud : dû à l'humidité dès 60 % | `similar`, `wind-chill` Le vent refroidit l'air, `colder`, `humid` L'humidité réchauffe l'air, `warmer` |
+
+« Stable », « Excellente » et « Le vent refroidit l'air » viennent de la maquette ; les autres textes sont à valider.
+
 ## Avant de contribuer
 
 Cette version de Next.js comporte des changements importants. Consulte le guide concerné dans `node_modules/next/dist/docs/` avant d'écrire du code (voir `AGENTS.md`).

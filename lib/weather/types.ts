@@ -68,6 +68,8 @@ export type HourlyForecast = {
   feelsLike: number;
   precipitationProbability: number;
   windSpeed: number;
+  /** Pression au niveau de la mer, en hPa (sert à la tendance de pression). */
+  pressure: number;
   isDay: boolean;
   condition: WeatherCondition;
 };

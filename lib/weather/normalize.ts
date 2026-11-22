@@ -33,6 +33,7 @@ export const HOURLY_VARIABLES = [
   "apparent_temperature",
   "precipitation_probability",
   "wind_speed_10m",
+  "pressure_msl",
   "weather_code",
   "is_day",
 ] as const;
@@ -156,6 +157,7 @@ function normalizeHourly(source: UnknownRecord, hours: number): HourlyForecast[]
   const feelsLike = readNumbers(source, "apparent_temperature", p, hours);
   const rain = readNumbers(source, "precipitation_probability", p, hours);
   const wind = readNumbers(source, "wind_speed_10m", p, hours);
+  const pressure = readNumbers(source, "pressure_msl", p, hours);
   const code = readNumbers(source, "weather_code", p, hours);
   const isDay = readNumbers(source, "is_day", p, hours);
 
@@ -165,6 +167,7 @@ function normalizeHourly(source: UnknownRecord, hours: number): HourlyForecast[]
     feelsLike: feelsLike[i],
     precipitationProbability: rain[i],
     windSpeed: wind[i],
+    pressure: pressure[i],
     isDay: isDay[i] === 1,
     condition: getWeatherCondition(code[i]),
   }));
