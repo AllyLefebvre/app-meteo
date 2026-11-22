@@ -26,7 +26,7 @@ const VILLES_PAR_LANGUE: Record<LangueVillesPopulaires, readonly VillePopulaire[
     { nom: "Montréal", nomComplet: "Montréal, QC", latitude: 45.5088, longitude: -73.5878 },
     { nom: "Québec", nomComplet: "Québec, QC", latitude: 46.8123, longitude: -71.2145 },
     { nom: "Sherbrooke", nomComplet: "Sherbrooke, QC", latitude: 45.4001, longitude: -71.8991 },
-    { nom: "Gatineau", nomComplet: "Gatineau, QC", latitude: 45.4772, longitude: -75.7015 },
+    { nom: "Gatineau", nomComplet: "Gatineau, QC", latitude: 45.4772, longitude: -75.7016 },
   ],
 };
 
