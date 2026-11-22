@@ -1,10 +1,13 @@
 import type { WeatherErrorCode } from "./errors";
+import { DEFAULT_COUNT, MAX_COUNT } from "./geocoding";
+import type { City } from "./types";
 
 /*
- * Contrat de la route GET /api/weather, partagé entre le serveur et
- * l'interface. Ce fichier ne contient aucun code serveur : un composant client
- * peut l'importer.
+ * Contrats des routes GET /api/weather et GET /api/geocode (plus bas),
+ * partagés entre le serveur et l'interface. Ce fichier ne contient aucun code
+ * serveur : un composant client peut l'importer.
  *
+ * GET /api/weather?lat=45.5017&lon=-73.5673
  * Succès : 200 avec un `WeatherData` (voir `types.ts`).
  * Échec : un `WeatherApiErrorBody`, avec le statut indiqué par
  * `WEATHER_API_ERROR_STATUS`.
@@ -81,4 +84,41 @@ export function parseCoordinates(params: URLSearchParams): ParsedCoordinates {
   }
 
   return { ok: true, latitude, longitude };
+}
+
+/*
+ * GET /api/geocode?q=Montréal&count=5
+ *
+ * Succès : 200 avec un `GeocodeApiResponse`. Une saisie vide ou trop courte,
+ * ou une recherche sans résultat, renvoie `{ results: [] }`.
+ * Échec : un `WeatherApiErrorBody`, comme pour /api/weather.
+ */
+
+export type GeocodeApiResponse = {
+  results: City[];
+};
+
+export type ParsedCitySearch =
+  | { ok: true; query: string; count: number }
+  | { ok: false; code: "INVALID_PARAMS"; message: string };
+
+/** Lit et valide les paramètres q (texte saisi) et count (facultatif). */
+export function parseCitySearch(params: URLSearchParams): ParsedCitySearch {
+  const query = params.get("q") ?? "";
+  const rawCount = params.get("count")?.trim();
+
+  if (rawCount === undefined || rawCount === "") {
+    return { ok: true, query, count: DEFAULT_COUNT };
+  }
+
+  const count = Number(rawCount);
+  if (!/^\d+$/.test(rawCount) || count < 1 || count > MAX_COUNT) {
+    return {
+      ok: false,
+      code: "INVALID_PARAMS",
+      message: `Le paramètre count doit être un entier entre 1 et ${MAX_COUNT}.`,
+    };
+  }
+
+  return { ok: true, query, count };
 }
