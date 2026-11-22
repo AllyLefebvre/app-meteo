@@ -94,3 +94,26 @@ export type WeatherData = {
   /** Les 7 prochains jours, à partir d'aujourd'hui. */
   daily: DailyForecast[];
 };
+
+/** Ville trouvée par le géocodage (recherche par nom). */
+export type City = {
+  /** Identifiant GeoNames, stable : sert de clé de liste. */
+  id: number;
+  /** Nom de la ville, en français quand il existe, ex. « Montréal ». */
+  name: string;
+  /** Province, état ou région, ex. « Québec ». Absente pour certains lieux. */
+  region: string | null;
+  /** Pays en français, ex. « Canada ». */
+  country: string;
+  /** Code pays ISO 3166-1 alpha-2, ex. « CA ». */
+  countryCode: string;
+  latitude: number;
+  longitude: number;
+  /** Fuseau IANA de la ville, ex. « America/Toronto ». */
+  timezone: string;
+  /**
+   * Affichage court de la maquette : « Montréal, QC » au Canada (code de
+   * province), « Paris, France » ailleurs.
+   */
+  label: string;
+};
