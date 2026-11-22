@@ -47,7 +47,7 @@ export default async function Previsions({ searchParams }: PrevisionsProps) {
 
   if (!meteo) {
     return (
-      <PrevisionsCadre lieu={lieu.nom} date="">
+      <PrevisionsCadre lieu={lieu.nom} date="" ville={lieu.nom}>
         <RetenirVille {...lieu} />
         <EtatErreur />
       </PrevisionsCadre>
@@ -60,7 +60,7 @@ export default async function Previsions({ searchParams }: PrevisionsProps) {
   });
 
   return (
-    <PrevisionsCadre lieu={lieu.nom} date={date}>
+    <PrevisionsCadre lieu={lieu.nom} date={date} ville={lieu.nom}>
       <h1 className="sr-only">Prévisions pour {lieu.nom}</h1>
       <RetenirVille {...lieu} />
       <PrevisionsGrille

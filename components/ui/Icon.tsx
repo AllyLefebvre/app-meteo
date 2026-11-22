@@ -7,6 +7,7 @@ import {
   Droplet,
   Eye,
   Gauge,
+  LoaderCircle,
   MapPin,
   Search,
   Sparkle,
@@ -21,7 +22,8 @@ import {
 
 /**
  * Correspondance entre les 16 icônes de la maquette Figma (page « Composants »)
- * et leur équivalent lucide-react.
+ * et leur équivalent lucide-react, plus `chargement` (indicateur d'attente,
+ * à faire tourner avec `animate-spin`).
  */
 const ICONS = {
   recherche: Search,
@@ -40,6 +42,7 @@ const ICONS = {
   "coucher-soleil": Sunset,
   pression: Gauge,
   retour: ArrowLeft,
+  chargement: LoaderCircle,
 } as const satisfies Record<string, LucideIcon>;
 
 export type IconName = keyof typeof ICONS;
