@@ -56,6 +56,31 @@ Vérifiées le 21 novembre 2026 sur les pages [Terms](https://open-meteo.com/en/
 |---|---|---|
 | `OPEN_METEO_API_KEY` | Non | Clé de l'abonnement commercial Open-Meteo. Sans clé, l'API gratuite est utilisée. |
 
+### Route `GET /api/weather`
+
+Point d'entrée des données météo pour l'interface : `app/api/weather/route.ts`. Le contrat (types d'erreur, statuts, lecture des paramètres) est dans `lib/weather/api.ts`, importable côté client.
+
+```
+GET /api/weather?lat=45.5017&lon=-73.5673
+```
+
+- `lat` et `lon` : nombres décimaux (« 45.5017 », « -73.5673 »), entre -90 et 90 pour la latitude et entre -180 et 180 pour la longitude. Ils sont arrondis à 4 décimales (environ 11 m) pour que des recherches voisines partagent le même cache.
+- **200** : un objet `WeatherData`, avec l'en-tête `Cache-Control: public, max-age=300, stale-while-revalidate=300`.
+- **Erreur** : `{ "error": { "code": "…", "message": "…" } }`, avec l'en-tête `Cache-Control: no-store`. Le message est en français et peut être affiché tel quel.
+
+| Code | Statut | Cas |
+|---|---|---|
+| `INVALID_PARAMS` | 400 | `lat` ou `lon` absent ou non numérique |
+| `INVALID_COORDINATES` | 400 | Coordonnées hors limites |
+| `NETWORK` | 502 | Open-Meteo injoignable ou délai dépassé (8 s) |
+| `PROVIDER` | 502 | Open-Meteo a répondu avec une erreur |
+| `INVALID_RESPONSE` | 502 | Réponse d'Open-Meteo dans un format inattendu |
+| `INTERNAL` | 500 | Erreur inattendue |
+
+Pour les erreurs 502, le détail technique est écrit dans les journaux du serveur, pas dans la réponse.
+
+Côté serveur, un même point n'est demandé à Open-Meteo qu'une fois toutes les 10 minutes : les appels suivants sont servis par le cache de Next.js.
+
 ## Avant de contribuer
 
 Cette version de Next.js comporte des changements importants. Consulte le guide concerné dans `node_modules/next/dist/docs/` avant d'écrire du code (voir `AGENTS.md`).
