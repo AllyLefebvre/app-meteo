@@ -199,12 +199,6 @@ export default function SearchInput({
           aria-describedby={texte ? `${id}-message` : undefined}
           className="min-w-0 flex-1 bg-transparent text-lg text-encre outline-none placeholder:text-encre/60"
         />
-        {/* Badge absent de la barre compacte (maquette). Rôle à définir dans WMC-35. */}
-        {taille === "large" && (
-          <span className="hidden shrink-0 md:block">
-            <Badge icon="etincelles">IA</Badge>
-          </span>
-        )}
       </form>
 
       {suggestions.listeOuverte && (
