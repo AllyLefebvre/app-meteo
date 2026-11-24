@@ -2,6 +2,7 @@ import MobileHeader from "@/components/layout/MobileHeader";
 import PageBackground from "@/components/layout/PageBackground";
 import Badge from "@/components/ui/Badge";
 import SearchInput from "@/components/ui/SearchInput";
+import VillesPopulaires from "@/components/accueil/VillesPopulaires";
 
 /*
  * Hero de l'accueil (maquette : desktop 6:48, mobile 8:359).
@@ -26,6 +27,10 @@ export default function Home() {
         </p>
         <div className="w-full pt-2 md:pt-4">
           <SearchInput />
+        </div>
+        {/* Villes populaires (maquette : section 6:71, 32 px sous la recherche). */}
+        <div className="w-full pt-4 md:pt-8">
+          <VillesPopulaires />
         </div>
       </section>
     </PageBackground>

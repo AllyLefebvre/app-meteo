@@ -2,10 +2,15 @@
 
 import { useId, useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Badge from "@/components/ui/Badge";
+import BoutonMaPosition from "@/components/ui/BoutonMaPosition";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
+import SuggestionsVilles from "@/components/ui/SuggestionsVilles";
+import { TEXTES_SUGGESTIONS, useSuggestionsVilles } from "@/components/ui/useSuggestionsVilles";
 import { lienPrevisions } from "@/lib/previsions";
 import type { GeocodeApiResponse } from "@/lib/weather/api";
+import type { City } from "@/lib/weather/types";
 
 export type SearchInputTaille = "large" | "compacte";
 
@@ -62,6 +67,9 @@ function message(etat: Etat): string {
  * Saisie vide : rien ne se passe. Ville introuvable ou service indisponible :
  * message sous la barre, annoncé par les lecteurs d'écran (messages provisoires,
  * en attendant la maquette des états, WMC-36).
+ *
+ * Pendant la saisie, des suggestions de villes s'affichent sous la barre
+ * (combobox ARIA 1.2, WMC-24) : voir useSuggestionsVilles et SuggestionsVilles.
  */
 export default function SearchInput({
   taille = "large",
@@ -73,15 +81,42 @@ export default function SearchInput({
   const [etat, setEtat] = useState<Etat>({ type: "repos" });
   const [navigation, demarrerNavigation] = useTransition();
 
+  const suggestions = useSuggestionsVilles({ onChoisir: choisirVille });
+
   const enCours = etat.type === "recherche" || navigation;
-  const texte = message(etat);
+  // Message visible : celui de la validation, sinon celui des suggestions.
+  const texte =
+    message(etat) ||
+    (suggestions.statut === "erreur"
+      ? TEXTES_SUGGESTIONS.erreur
+      : suggestions.statut === "pret" && suggestions.villes.length === 0
+        ? TEXTES_SUGGESTIONS.aucune(suggestions.requete)
+        : "");
+  // Nombre de suggestions : annoncé aux lecteurs d'écran seulement (la liste est visible).
+  const annonce =
+    !texte && suggestions.listeOuverte ? TEXTES_SUGGESTIONS.nombre(suggestions.villes.length) : "";
+  const idListe = `${id}-suggestions`;
+  const idOption = (index: number) => `${id}-suggestion-${index}`;
   const { conteneur, barre, halo } = TAILLES[taille];
+
+  /** Ouvre la page Prévisions d'une suggestion (clic ou Entrée). */
+  function choisirVille(ville: City) {
+    suggestions.reinitialiser();
+    setEtat({ type: "repos" });
+    setSaisie("");
+    demarrerNavigation(() => {
+      router.push(
+        lienPrevisions({ latitude: ville.latitude, longitude: ville.longitude, nom: ville.label }),
+      );
+    });
+  }
 
   async function rechercher(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const ville = saisie.trim();
     if (!ville || enCours) return;
 
+    suggestions.reinitialiser();
     setEtat({ type: "recherche" });
     try {
       const reponse = await fetch(`/api/geocode?q=${encodeURIComponent(ville)}&count=1`);
@@ -143,7 +178,19 @@ export default function SearchInput({
           onChange={(event) => {
             setSaisie(event.target.value);
             if (etat.type !== "recherche") setEtat({ type: "repos" });
+            suggestions.chercher(event.target.value);
           }}
+          onKeyDown={suggestions.gererClavier}
+          onBlur={suggestions.fermer}
+          role="combobox"
+          aria-expanded={suggestions.listeOuverte}
+          aria-controls={idListe}
+          aria-autocomplete="list"
+          aria-activedescendant={
+            suggestions.listeOuverte && suggestions.indexActif >= 0
+              ? idOption(suggestions.indexActif)
+              : undefined
+          }
           placeholder={placeholder}
           autoComplete="off"
           enterKeyHint="search"
@@ -153,6 +200,17 @@ export default function SearchInput({
           className="min-w-0 flex-1 bg-transparent text-lg text-encre outline-none placeholder:text-encre/60"
         />
       </form>
+
+      {suggestions.listeOuverte && (
+        <SuggestionsVilles
+          id={idListe}
+          villes={suggestions.villes}
+          indexActif={suggestions.indexActif}
+          idOption={idOption}
+          onChoisir={choisirVille}
+          onSurvol={suggestions.setIndexActif}
+        />
+      )}
 
       <div
         className={
@@ -167,17 +225,10 @@ export default function SearchInput({
           className="min-w-0 flex-1 text-sm font-medium text-encre"
         >
           {texte}
+          {annonce && <span className="sr-only">{annonce}</span>}
         </p>
-        {taille === "large" && (
-          // Géolocalisation branchée dans WMC-25.
-          <button
-            type="button"
-            className="ml-auto flex shrink-0 items-center gap-1.5 rounded-lg text-sm text-encre-douce transition-colors hover:text-encre focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-encre"
-          >
-            <Icon name="position" size={16} />
-            Utiliser ma position
-          </button>
-        )}
+        {/* Hors du formulaire, type="button" : ne lance jamais la recherche. */}
+        {taille === "large" && <BoutonMaPosition apparence="lien" />}
       </div>
     </div>
   );
