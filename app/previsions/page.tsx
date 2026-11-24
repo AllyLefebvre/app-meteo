@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import BlocAVenir from "@/components/previsions/BlocAVenir";
 import EtatErreur from "@/components/previsions/EtatErreur";
-import MeteoActuelleProvisoire from "@/components/previsions/MeteoActuelleProvisoire";
+import MeteoActuelle from "@/components/previsions/MeteoActuelle";
 import PrevisionsCadre from "@/components/previsions/PrevisionsCadre";
 import PrevisionsGrille from "@/components/previsions/PrevisionsGrille";
 import RetenirVille from "@/components/previsions/RetenirVille";
@@ -64,7 +64,7 @@ export default async function Previsions({ searchParams }: PrevisionsProps) {
       <h1 className="sr-only">Prévisions pour {lieu.nom}</h1>
       <RetenirVille {...lieu} />
       <PrevisionsGrille
-        actuelle={<MeteoActuelleProvisoire nom={lieu.nom} meteo={meteo} />}
+        actuelle={<MeteoActuelle nom={lieu.nom} meteo={meteo} />}
         resume={
           <BlocAVenir
             titre="Résumé IA"
