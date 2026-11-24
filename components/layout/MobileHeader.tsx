@@ -1,3 +1,4 @@
+import BoutonMaPosition from "@/components/ui/BoutonMaPosition";
 import Button from "@/components/ui/Button";
 import ButtonLink from "@/components/ui/ButtonLink";
 import Logo from "@/components/ui/Logo";
@@ -25,8 +26,8 @@ export default function MobileHeader(props: MobileHeaderProps) {
       <header className={CONTENEUR}>
         <div className="flex h-11 items-center justify-between">
           <Logo taille="mobile" />
-          {/* Action branchée avec la géolocalisation (WMC-25). */}
-          <Button icon="position" label="Utiliser ma position" />
+          {/* Message de refus ou d'échec affiché sous l'en-tête. */}
+          <BoutonMaPosition apparence="rond" />
         </div>
       </header>
     );
