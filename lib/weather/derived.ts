@@ -62,7 +62,7 @@ export const VISIBILITY_THRESHOLDS_M: readonly [VisibilityQuality, number][] = [
   ["very-poor", 0],
 ];
 
-export function getVisibilityQuality(meters: number): VisibilityQuality | null {
+export function getVisibilityQuality(meters: number | null): VisibilityQuality | null {
   if (!isNumber(meters) || meters < 0) return null;
   for (const [quality, min] of VISIBILITY_THRESHOLDS_M) {
     if (meters >= min) return quality;

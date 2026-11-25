@@ -44,13 +44,18 @@ export type CurrentWeather = {
   /** Maximum du jour. */
   max: number;
   windSpeed: number;
-  windGusts: number;
+  /*
+   * Mesures secondaires du bloc « Détails du moment » : null quand le
+   * fournisseur ne les donne pas pour ce lieu. Le bloc affiche alors un
+   * tiret, au lieu de faire échouer toute la page.
+   */
+  windGusts: number | null;
   /** Direction d'où vient le vent, en degrés (0 = nord). */
   windDirection: number;
-  humidity: number;
-  dewPoint: number;
-  visibility: number;
-  pressure: number;
+  humidity: number | null;
+  dewPoint: number | null;
+  visibility: number | null;
+  pressure: number | null;
   /** Lever du soleil du jour, heure locale du lieu. */
   sunrise: string;
   /** Coucher du soleil du jour, heure locale du lieu. */
