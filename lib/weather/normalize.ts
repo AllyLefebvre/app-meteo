@@ -175,7 +175,7 @@ function normalizeHourly(source: UnknownRecord, hours: number): HourlyForecast[]
     windSpeed: wind[i],
     pressure: pressure[i],
     isDay: isDay[i] === 1,
-    condition: getWeatherCondition(code[i]),
+    condition: getWeatherCondition(code[i], isDay[i] === 1),
   }));
 }
 
@@ -235,6 +235,9 @@ function normalizeCurrent(
     sunset: today.sunset,
     precipitationProbability: currentHour.precipitationProbability,
     isDay: readNumber(source, "is_day", p) === 1,
-    condition: getWeatherCondition(readNumber(source, "weather_code", p)),
+    condition: getWeatherCondition(
+      readNumber(source, "weather_code", p),
+      readNumber(source, "is_day", p) === 1,
+    ),
   };
 }

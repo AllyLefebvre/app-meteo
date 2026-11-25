@@ -2,6 +2,7 @@ import {
   ArrowLeft,
   Cloud,
   CloudRain,
+  CloudMoon,
   CloudSnow,
   CloudSun,
   Droplet,
@@ -9,6 +10,7 @@ import {
   Gauge,
   LoaderCircle,
   MapPin,
+  Moon,
   Search,
   Sparkle,
   Sun,
@@ -23,7 +25,8 @@ import {
 /**
  * Correspondance entre les 16 icônes de la maquette Figma (page « Composants »)
  * et leur équivalent lucide-react, plus `chargement` (indicateur d'attente,
- * à faire tourner avec `animate-spin`).
+ * à faire tourner avec `animate-spin`) et les variantes de nuit `lune` et
+ * `nuage-lune` (heures de nuit, voir lib/weather/wmo.ts).
  */
 const ICONS = {
   recherche: Search,
@@ -43,6 +46,8 @@ const ICONS = {
   pression: Gauge,
   retour: ArrowLeft,
   chargement: LoaderCircle,
+  lune: Moon,
+  "nuage-lune": CloudMoon,
 } as const satisfies Record<string, LucideIcon>;
 
 export type IconName = keyof typeof ICONS;

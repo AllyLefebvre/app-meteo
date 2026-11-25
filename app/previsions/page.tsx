@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import BlocAVenir from "@/components/previsions/BlocAVenir";
 import DetailsDuMoment from "@/components/previsions/DetailsDuMoment";
 import EtatErreur from "@/components/previsions/EtatErreur";
+import HeureParHeure from "@/components/previsions/HeureParHeure";
 import MeteoActuelle from "@/components/previsions/MeteoActuelle";
 import PrevisionsCadre from "@/components/previsions/PrevisionsCadre";
 import PrevisionsGrille from "@/components/previsions/PrevisionsGrille";
@@ -74,7 +75,7 @@ export default async function Previsions({ searchParams }: PrevisionsProps) {
           />
         }
         details={<DetailsDuMoment meteo={meteo} />}
-        heures={<BlocAVenir titre="Heure par heure" hauteur="min-h-[184px] md:min-h-[191px]" />}
+        heures={<HeureParHeure meteo={meteo} />}
         jours={
           <BlocAVenir
             titre="7 prochains jours"

@@ -1,3 +1,4 @@
+import type { IconName } from "@/components/ui/Icon";
 import type { WeatherCondition } from "./types";
 
 type ConditionInfo = Omit<WeatherCondition, "code">;
@@ -46,7 +47,19 @@ export const UNKNOWN_CONDITION: ConditionInfo = {
   icon: "nuage",
 };
 
-export function getWeatherCondition(code: number): WeatherCondition {
+/** De nuit, le soleil des icônes devient une lune. */
+const ICONES_DE_NUIT: Partial<Record<IconName, IconName>> = {
+  soleil: "lune",
+  "nuage-soleil": "nuage-lune",
+};
+
+/**
+ * Condition d'un code WMO. `isDay` à false (heures de nuit) remplace le
+ * soleil par une lune : « Ciel dégagé » à 22 h affiche une lune. Les jours
+ * (prévisions sur 7 jours) gardent l'icône de jour.
+ */
+export function getWeatherCondition(code: number, isDay = true): WeatherCondition {
   const info = WMO_CONDITIONS[code] ?? UNKNOWN_CONDITION;
-  return { code, ...info };
+  const icon = isDay ? info.icon : (ICONES_DE_NUIT[info.icon] ?? info.icon);
+  return { code, ...info, icon };
 }
