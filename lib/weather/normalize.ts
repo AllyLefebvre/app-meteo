@@ -68,6 +68,12 @@ function readRecord(source: UnknownRecord, key: string): UnknownRecord {
   return value;
 }
 
+/** Nombre facultatif : null s'il est absent ou invalide, sans erreur. */
+function readOptionalNumber(source: UnknownRecord, key: string): number | null {
+  const value = source[key];
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
 function readNumber(source: UnknownRecord, key: string, path: string): number {
   const value = source[key];
   if (typeof value !== "number" || !Number.isFinite(value)) {
@@ -218,12 +224,13 @@ function normalizeCurrent(
     min: today.min,
     max: today.max,
     windSpeed: readNumber(source, "wind_speed_10m", p),
-    windGusts: readNumber(source, "wind_gusts_10m", p),
+    // Mesures secondaires : facultatives (voir CurrentWeather).
+    windGusts: readOptionalNumber(source, "wind_gusts_10m"),
     windDirection: readNumber(source, "wind_direction_10m", p),
-    humidity: readNumber(source, "relative_humidity_2m", p),
-    dewPoint: readNumber(source, "dew_point_2m", p),
-    visibility: readNumber(source, "visibility", p),
-    pressure: readNumber(source, "pressure_msl", p),
+    humidity: readOptionalNumber(source, "relative_humidity_2m"),
+    dewPoint: readOptionalNumber(source, "dew_point_2m"),
+    visibility: readOptionalNumber(source, "visibility"),
+    pressure: readOptionalNumber(source, "pressure_msl"),
     sunrise: today.sunrise,
     sunset: today.sunset,
     precipitationProbability: currentHour.precipitationProbability,

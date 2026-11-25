@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import BlocAVenir from "@/components/previsions/BlocAVenir";
+import DetailsDuMoment from "@/components/previsions/DetailsDuMoment";
 import EtatErreur from "@/components/previsions/EtatErreur";
 import MeteoActuelle from "@/components/previsions/MeteoActuelle";
 import PrevisionsCadre from "@/components/previsions/PrevisionsCadre";
@@ -72,9 +73,7 @@ export default async function Previsions({ searchParams }: PrevisionsProps) {
             hauteur="min-h-[132px] md:min-h-[167px]"
           />
         }
-        details={
-          <BlocAVenir titre="Détails du moment" hauteur="min-h-[287px] md:min-h-[473px]" />
-        }
+        details={<DetailsDuMoment meteo={meteo} />}
         heures={<BlocAVenir titre="Heure par heure" hauteur="min-h-[184px] md:min-h-[191px]" />}
         jours={
           <BlocAVenir
